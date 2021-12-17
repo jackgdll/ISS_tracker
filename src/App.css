@@ -37,3 +37,7 @@
     transform: translateY(0px);
   }
 }
+
+#map {
+  height: 100vh;
+}
