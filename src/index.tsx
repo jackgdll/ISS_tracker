@@ -2,10 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { store } from './app/store';
+import store from './state/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
-import "leaflet/dist/leaflet.css";
 
 ReactDOM.render(
   <React.StrictMode>

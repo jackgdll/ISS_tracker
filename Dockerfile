@@ -9,6 +9,7 @@ RUN yarn
 
 COPY . .
 
+RUN yarn add serve
 RUN yarn build
 
-CMD [ "node", "./dist/index.js" ]
+CMD [ "npx", "serve", "-s", "build" ]
