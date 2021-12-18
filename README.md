@@ -19,6 +19,8 @@ Track the International Space Station's real time position above the earth.
 
 Map is updated every 10 seconds, making an API call to `http://api.open-notify.org/iss-now.json`
 
+A trail is left behind the Stations path.
+
 ## Usage
 
 Clone the repo:
