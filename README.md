@@ -15,6 +15,10 @@ Track the International Space Station's real time position above the earth.
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/)
 
+## Description
+
+Map is updated every 10 seconds, making an API call to `http://api.open-notify.org/iss-now.json`
+
 ## Usage
 
 Clone the repo:
@@ -22,6 +26,9 @@ Clone the repo:
 ```bash
 git clone git@github.com:therosbif/ISS_tracker.git
 ```
+
+| ⚠️ WARNING: Due to Firefox's CORS policy calls to the ISS position API are blocked by default, for optimal experience use a Chromium based browser. |
+----
 
 ### Production
 
@@ -38,4 +45,3 @@ yarn
 
 yarn start
 ```
-

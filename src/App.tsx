@@ -13,25 +13,15 @@ import { issIcon } from "./Icon";
 import { fetchISSRequest } from "./state/actionCreators";
 import { useAppDispatch } from "./state/hooks";
 import { RootState } from "./state/reducers";
-
-
-const formatTimestamp = (timestamp: number): string =>
-  Intl.DateTimeFormat("fr", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-  }).format(timestamp * 1000);
+import { pythag, formatTimestamp } from "./utils";
 
 const TEN_SECONDS_MS = 10000;
+const DISTANCE_LIMIT = 100;
 
 function App() {
   const dispatch = useAppDispatch();
   const { loading, data, error } = useSelector((state: RootState) => state.iss);
-  const [history, setHistory] = useState<LatLngExpression[][]>([]);
+  const [history, setHistory] = useState<number[][][]>([[]]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -43,9 +33,29 @@ function App() {
 
   useEffect(() => {
     if (data) {
-      const newHistory = history.concat([
-        [data.iss_position.latitude, data.iss_position.longitude],
-      ]);
+      const lastLine = history[history.length - 1];
+      const lastPoint = lastLine[lastLine.length - 1];
+      const isNewLine =
+        lastPoint && lastPoint.length === 2
+          ? pythag(
+              lastPoint[0],
+              data.iss_position.latitude,
+              lastPoint[1],
+              data.iss_position.longitude
+            ) > DISTANCE_LIMIT
+          : false;
+      let newHistory = history;
+
+      if (isNewLine) {
+        newHistory.push([
+          [data.iss_position.latitude, data.iss_position.longitude],
+        ]);
+      } else {
+        newHistory[history.length - 1].push([
+          data.iss_position.latitude,
+          data.iss_position.longitude,
+        ]);
+      }
       setHistory(newHistory);
     }
   }, [data]);
@@ -87,7 +97,10 @@ function App() {
                   Time: {formatTimestamp(data.timestamp)}
                 </Popup>
               </Marker>
-              <Polyline positions={history} pathOptions={{color: 'lime'}} />
+              <Polyline
+                positions={history as LatLngExpression[][]}
+                pathOptions={{ color: "lime" }}
+              />
             </>
           )}
         </MapContainer>
