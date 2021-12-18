@@ -7,7 +7,7 @@ Track the International Space Station's real time position above the earth.
 - [React](https://reactjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Redux](https://redux.js.org/)
-- [Redux-Saga[(https://redux-saga.js.org/)
+- [Redux-Saga](https://redux-saga.js.org/)
 - [React-Leaflet](https://react-leaflet.js.org)
 
 ## Prerequisites
