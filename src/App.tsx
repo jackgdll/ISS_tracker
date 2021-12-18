@@ -1,10 +1,19 @@
-import React, { useEffect } from "react";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { LatLngExpression } from "leaflet";
+import React, { useEffect, useState } from "react";
+import {
+  MapContainer,
+  Marker,
+  Polyline,
+  Popup,
+  TileLayer,
+} from "react-leaflet";
 import { useSelector } from "react-redux";
 import "./App.css";
+import { issIcon } from "./Icon";
 import { fetchISSRequest } from "./state/actionCreators";
 import { useAppDispatch } from "./state/hooks";
 import { RootState } from "./state/reducers";
+
 
 const formatTimestamp = (timestamp: number): string =>
   Intl.DateTimeFormat("fr", {
@@ -15,26 +24,29 @@ const formatTimestamp = (timestamp: number): string =>
     minute: "2-digit",
     second: "2-digit",
     timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-  }).format(timestamp*1000);
+  }).format(timestamp * 1000);
 
-const MINUTE_MS = 60000 / 6;
+const TEN_SECONDS_MS = 10000;
 
 function App() {
   const dispatch = useAppDispatch();
   const { loading, data, error } = useSelector((state: RootState) => state.iss);
+  const [history, setHistory] = useState<LatLngExpression[][]>([]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(fetchISSRequest());
-    }, MINUTE_MS);
+    }, TEN_SECONDS_MS);
 
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    console.log(data?.timestamp);
     if (data) {
-      console.log(formatTimestamp(data.timestamp));
+      const newHistory = history.concat([
+        [data.iss_position.latitude, data.iss_position.longitude],
+      ]);
+      setHistory(newHistory);
     }
   }, [data]);
 
@@ -59,22 +71,24 @@ function App() {
           {loading ? (
             <></>
           ) : (
-            <Marker
-              position={[
-                data.iss_position.latitude,
-                data.iss_position.longitude,
-              ]}
-            >
-              <Popup>
-                ISS: <br />
-                Position: <br />
-                · latitude: {data.iss_position.latitude} <br />
-                · longitude:{" "}
-                {data.iss_position.longitude}
-                <br />
-                Time: {formatTimestamp(data.timestamp)}
-              </Popup>
-            </Marker>
+            <>
+              <Marker
+                position={[
+                  data.iss_position.latitude,
+                  data.iss_position.longitude,
+                ]}
+                icon={issIcon}
+              >
+                <Popup>
+                  ISS: <br />
+                  Position: <br />· latitude: {data.iss_position.latitude}{" "}
+                  <br />· longitude: {data.iss_position.longitude}
+                  <br />
+                  Time: {formatTimestamp(data.timestamp)}
+                </Popup>
+              </Marker>
+              <Polyline positions={history} pathOptions={{color: 'lime'}} />
+            </>
           )}
         </MapContainer>
       ) : (

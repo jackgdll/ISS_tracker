@@ -1,3 +1,8 @@
 #map {
   height: 100vh;
 }
+
+.leaflet-popup-content-wrapper, .leaflet-popup.tip {
+  background-color: #000;
+  color: whitesmoke;
+}
