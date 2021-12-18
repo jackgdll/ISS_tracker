@@ -4,7 +4,7 @@ import { fetchISSFailure, fetchISSSuccess } from "../actionCreators";
 import { IISSData, issTypes } from "../types";
 
 export const getISSData = () =>
-  axios.get<IISSData>("http://api.open-notify.org/iss-now.json", {headers: {'Content-Security-Policy': 'upgrade-insecure-requests'}});
+  axios.get<IISSData>("http://api.open-notify.org/iss-now.json");
 
 export function* fetchISSDataSaga(): Generator {
   try {
