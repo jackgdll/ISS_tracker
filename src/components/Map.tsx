@@ -1,4 +1,3 @@
-import { LatLngExpression } from "leaflet";
 import { ReactElement, useEffect, useState } from "react";
 import { MapContainer, Polyline, TileLayer,  } from "react-leaflet";
 import { useSelector } from "react-redux";
@@ -24,7 +23,7 @@ export default function Map(): ReactElement {
     if (!loading && !error) {
       setIssData(live ? last(data) : currentData);
     }
-  }, [currentData, live, data, loading]);
+  }, [currentData, live, data, loading, error]);
 
   useEffect(() => {
     dispatch(fetchISSRequest());
@@ -33,7 +32,7 @@ export default function Map(): ReactElement {
     }, THREE_SECONDS_MS);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (data && !loading) {
@@ -42,7 +41,7 @@ export default function Map(): ReactElement {
         dispatch(appendToPolyLine(position));
       }
     }
-  }, [data, loading]);
+  }, [data, loading, dispatch]);
 
   // useEffect(() => {
   //   for (const elem of polyLine) {
