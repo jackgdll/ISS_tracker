@@ -5,7 +5,7 @@ const DISTANCE_LIMIT = 1000;
 
 const initialState: PolyLineState = [[]];
 
-export default (state = initialState, action: PolyLineAction) => {
+const polyLineReducer = (state = initialState, action: PolyLineAction) => {
   switch (action.type) {
     case PolyLineTypes.POLYLINE_APPEND:
       let lastLine: number[][] = last(state);
@@ -28,14 +28,6 @@ export default (state = initialState, action: PolyLineAction) => {
         if (state === [[]]) {
           return [[[action.payload.latitude, action.payload.longitude]]];
         }
-        if (lastPoint?.length === 2) {
-        console.log('dist: ' + pythag(
-          lastPoint[0],
-          action.payload.latitude,
-          lastPoint[1],
-          action.payload.longitude
-        ))
-        }
         lastLine.push([action.payload.latitude, action.payload.longitude]);
         state[state.length - 1] = lastLine;
         return state;
@@ -48,3 +40,5 @@ export default (state = initialState, action: PolyLineAction) => {
       return state;
   }
 };
+
+export default polyLineReducer;

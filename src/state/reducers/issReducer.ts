@@ -6,7 +6,7 @@ const initialState: ISSState = {
   error: null,
 };
 
-export default (state = initialState, action: ISSAction): ISSState => {
+const issReducer = (state = initialState, action: ISSAction): ISSState => {
   switch (action.type) {
     case ISSTypes.FETCH_ISS_REQUEST:
       return {
@@ -36,3 +36,5 @@ export default (state = initialState, action: ISSAction): ISSState => {
       };
   }
 };
+
+export default issReducer;

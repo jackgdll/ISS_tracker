@@ -1,20 +1,22 @@
 import { LatLngExpression } from 'leaflet'
-import React, { ReactElement, useEffect } from 'react'
+import { ReactElement, useEffect } from 'react'
 import { MapContainer, Polyline, TileLayer } from 'react-leaflet'
-import { IISSData, PolyLineState } from '../state/types'
+import { useSelector } from 'react-redux'
+import { RootState } from '../state/store'
+import { IISSData } from '../state/types'
+import { last } from '../utils'
 import ISSMarker from './ISSMarker'
 
-interface Props {
-  loading: boolean;
-  data?: IISSData;
-  polyLine: PolyLineState;
-}
+export default function Map(): ReactElement {
+  const polyLine = useSelector((state: RootState) => state.polyLine);
+  const {live, data: currentData} = useSelector((state: RootState) => state.timeControl);
+  const { loading, data, error } = useSelector((state: RootState) => state.iss);
+  const issData = live ? last(data) : currentData;
 
-export default function Map({loading, data, polyLine}: Props): ReactElement {
   useEffect(() => {
-    console.log('data: ' + JSON.stringify((data)));
-    console.log('loading: ' + loading);
-  }, [data, loading])
+    console.log(JSON.stringify(issData))
+  }, [issData])
+
   return (
     <MapContainer
       id="map"
@@ -31,11 +33,11 @@ export default function Map({loading, data, polyLine}: Props): ReactElement {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {!data ? (
+      {!issData ? (
         <></>
       ) :
         <>
-          <ISSMarker data={data} />
+          <ISSMarker data={issData} />
           {polyLine[0][0]?.length === 2 ?
           <Polyline
             positions={polyLine as LatLngExpression[][]}
