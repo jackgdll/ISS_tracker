@@ -29,7 +29,7 @@ Clone the repo:
 git clone git@github.com:therosbif/ISS_tracker.git
 ```
 
-| ⚠️ WARNING: Due to Firefox's CORS policy calls to the ISS position API are blocked by default, for optimal experience use a Chromium based browser. |
+| ⚠️ WARNING: Due to Firefox's CORS policy, calls to the ISS position API are blocked by default, for optimal experience use a Chromium based browser. |
 ----
 
 ### Production
