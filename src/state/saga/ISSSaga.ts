@@ -1,7 +1,7 @@
 import axios from "axios";
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import { fetchISSFailure, fetchISSSuccess } from "../actionCreators";
-import { IISSData, issTypes } from "../types";
+import { IISSData, ISSTypes } from "../types";
 
 export const getISSData = () =>
   axios.get<IISSData>("http://api.open-notify.org/iss-now.json");
@@ -24,5 +24,5 @@ export function* fetchISSDataSaga(): Generator {
 }
 
 export function* ISSSaga() {
-  yield all([takeLatest(issTypes.FETCH_ISS_REQUEST, fetchISSDataSaga)]);
+  yield all([takeLatest(ISSTypes.FETCH_ISS_REQUEST, fetchISSDataSaga)]);
 }

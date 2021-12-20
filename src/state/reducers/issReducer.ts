@@ -1,32 +1,32 @@
-import { ISSAction, ISSState, issTypes } from "../types";
+import { ISSAction, ISSState, ISSTypes } from "../types";
 
 const initialState: ISSState = {
   loading: false,
-  data: null,
+  data: [],
   error: null,
 };
 
 export default (state = initialState, action: ISSAction): ISSState => {
   switch (action.type) {
-    case issTypes.FETCH_ISS_REQUEST:
+    case ISSTypes.FETCH_ISS_REQUEST:
       return {
         ...state,
         loading: true,
       };
 
-    case issTypes.FETCH_ISS_SUCCESS:
+    case ISSTypes.FETCH_ISS_SUCCESS:
       return {
         ...state,
         loading: false,
-        data: action.payload.data,
+        data: state.data.concat(action.payload.data),
         error: null,
       };
 
-    case issTypes.FETCH_ISS_FAILURE:
+    case ISSTypes.FETCH_ISS_FAILURE:
       return {
         ...state,
         loading: false,
-        data: null,
+        data: state.data,
         error: action.payload.error,
       }
 
