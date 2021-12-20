@@ -12,6 +12,9 @@ const polyLineReducer = (state = initialState, action: PolyLineAction) => {
       const lastPoint: number[] = last(lastLine);
 
       // Starts a new line if the ISS wrap arround the map
+      if (state.length === 0) {
+        return [[[action.payload.latitude, action.payload.longitude]]];
+      }
       if (
         state.length > 0 &&
         lastPoint.length === 2 &&
@@ -26,9 +29,6 @@ const polyLineReducer = (state = initialState, action: PolyLineAction) => {
           [[action.payload.latitude, action.payload.longitude]],
         ]);
       } else {
-        if (state.length === 0) {
-          return [[[action.payload.latitude, action.payload.longitude]]];
-        }
         lastLine.push([action.payload.latitude, action.payload.longitude]);
         state[state.length - 1] = lastLine;
         return state;

@@ -1,6 +1,6 @@
 import { LatLngExpression } from "leaflet";
 import { ReactElement, useEffect, useState } from "react";
-import { MapContainer, Polyline, TileLayer } from "react-leaflet";
+import { MapContainer, Polyline, TileLayer,  } from "react-leaflet";
 import { useSelector } from "react-redux";
 import { fetchISSRequest, appendToPolyLine } from "../state/actionCreators";
 import { useAppDispatch } from "../state/hooks";
@@ -44,6 +44,12 @@ export default function Map(): ReactElement {
     }
   }, [data, loading]);
 
+  // useEffect(() => {
+  //   for (const elem of polyLine) {
+  //   console.table(elem);
+  // }
+  // }, [polyLine])
+
   return (
     <MapContainer
       id="map"
@@ -64,7 +70,7 @@ export default function Map(): ReactElement {
         {!issData?.iss_position ? <></> : <ISSMarker data={issData} />}
         {polyLine.length !== 0 ? (
           <Polyline
-            positions={polyLine as LatLngExpression[][]}
+            positions={last(polyLine) as any}
             pathOptions={{ color: "#008b8b" }}
           />
         ) : (
