@@ -7,6 +7,6 @@ const rootReducer = combineReducers({
   iss: issReducer,
   polyLine: polyLineReducer,
   timeControl: timeControlReducer,
-})
+});
 
 export default rootReducer;

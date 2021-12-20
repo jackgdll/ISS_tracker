@@ -23,4 +23,4 @@ export const timeControlBackward = (
 
 export const timeControlReset = (): TimeControlResetAction => ({
   type: TimeControlTypes.TIME_RESET,
-})
+});

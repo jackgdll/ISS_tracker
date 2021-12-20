@@ -1,4 +1,9 @@
-import { PolyLineAppendAction, PolyLineAppendPayload, PolyLineClearAction, PolyLineTypes } from "../types";
+import {
+  PolyLineAppendAction,
+  PolyLineAppendPayload,
+  PolyLineClearAction,
+  PolyLineTypes,
+} from "../types";
 
 export const appendToPolyLine = (
   payload: PolyLineAppendPayload

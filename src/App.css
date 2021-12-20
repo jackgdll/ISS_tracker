@@ -2,14 +2,20 @@
   height: 100vh;
 }
 
-.leaflet-popup-content-wrapper, .leaflet-popup.tip {
+.leaflet-popup-content-wrapper,
+.leaflet-popup.tip {
   background-color: #000;
   color: whitesmoke;
 }
 
 .pannel {
-  justify-items: 'center';
-  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  text-justify: center;
+  width: 30%;
   border: 4px;
   border-color: #000;
+  text-align: center;
+  margin: auto;
+  color: #FFF;
 }

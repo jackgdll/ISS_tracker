@@ -1,21 +1,48 @@
-import { LatLngExpression } from 'leaflet'
-import { ReactElement, useEffect } from 'react'
-import { MapContainer, Polyline, TileLayer } from 'react-leaflet'
-import { useSelector } from 'react-redux'
-import { RootState } from '../state/store'
-import { IISSData } from '../state/types'
-import { last } from '../utils'
-import ISSMarker from './ISSMarker'
+import { LatLngExpression } from "leaflet";
+import { ReactElement, useEffect, useRef, useState } from "react";
+import { MapContainer, Polyline, TileLayer } from "react-leaflet";
+import { useSelector } from "react-redux";
+import { fetchISSRequest, appendToPolyLine } from "../state/actionCreators";
+import { useAppDispatch } from "../state/hooks";
+import { RootState } from "../state/store";
+import { IISSData } from "../state/types";
+import { last } from "../utils";
+import ISSMarker from "./ISSMarker";
+
+const THREE_SECONDS_MS = 3000;
 
 export default function Map(): ReactElement {
+  const dispatch = useAppDispatch();
   const polyLine = useSelector((state: RootState) => state.polyLine);
-  const {live, data: currentData} = useSelector((state: RootState) => state.timeControl);
+  const { live, data: currentData } = useSelector(
+    (state: RootState) => state.timeControl
+  );
   const { loading, data, error } = useSelector((state: RootState) => state.iss);
-  const issData = live ? last(data) : currentData;
+  const [issData, setIssData] = useState<IISSData | null>(null);
 
   useEffect(() => {
-    console.log(JSON.stringify(issData))
-  }, [issData])
+    if (!loading && !error) {
+      setIssData(live ? last(data) : currentData);
+    }
+  }, [currentData, live, data, loading]);
+
+  useEffect(() => {
+    dispatch(fetchISSRequest());
+    const interval = setInterval(() => {
+      dispatch(fetchISSRequest());
+    }, THREE_SECONDS_MS);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (data && !loading) {
+      const position = last(data)?.iss_position;
+      if (position) {
+        dispatch(appendToPolyLine(position));
+      }
+    }
+  }, [data, loading]);
 
   return (
     <MapContainer
@@ -33,18 +60,17 @@ export default function Map(): ReactElement {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {!issData ? (
-        <></>
-      ) :
-        <>
-          <ISSMarker data={issData} />
-          {polyLine[0][0]?.length === 2 ?
+      <>
+        {!issData?.iss_position ? <></> : <ISSMarker data={issData} />}
+        {polyLine.length !== 0 ? (
           <Polyline
             positions={polyLine as LatLngExpression[][]}
-            pathOptions={{ color: "lime" }}
-          /> : <></>}
-        </>
-      }
+            pathOptions={{ color: "#008b8b" }}
+          />
+        ) : (
+          <></>
+        )}
+      </>
     </MapContainer>
-  )
+  );
 }

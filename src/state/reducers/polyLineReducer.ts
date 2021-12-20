@@ -3,7 +3,7 @@ import { PolyLineAction, PolyLineState, PolyLineTypes } from "../types";
 
 const DISTANCE_LIMIT = 1000;
 
-const initialState: PolyLineState = [[]];
+const initialState: PolyLineState = [];
 
 const polyLineReducer = (state = initialState, action: PolyLineAction) => {
   switch (action.type) {
@@ -13,7 +13,8 @@ const polyLineReducer = (state = initialState, action: PolyLineAction) => {
 
       // Starts a new line if the ISS wrap arround the map
       if (
-        lastPoint?.length === 2 &&
+        state.length > 0 &&
+        lastPoint.length === 2 &&
         pythag(
           lastPoint[0],
           action.payload.latitude,
@@ -21,11 +22,11 @@ const polyLineReducer = (state = initialState, action: PolyLineAction) => {
           action.payload.longitude
         ) > DISTANCE_LIMIT
       ) {
-        return state.concat([[
-          [action.payload.latitude, action.payload.longitude],
-        ]]);
+        return state.concat([
+          [[action.payload.latitude, action.payload.longitude]],
+        ]);
       } else {
-        if (state === [[]]) {
+        if (state.length === 0) {
           return [[[action.payload.latitude, action.payload.longitude]]];
         }
         lastLine.push([action.payload.latitude, action.payload.longitude]);
@@ -34,7 +35,7 @@ const polyLineReducer = (state = initialState, action: PolyLineAction) => {
       }
 
     case PolyLineTypes.POLYLINE_CLEAR:
-      return [[]];
+      return initialState;
 
     default:
       return state;

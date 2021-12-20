@@ -26,7 +26,10 @@ const timeControlReducer = (
           (elem) => elem.timestamp === state.data?.timestamp
         );
 
-        if (data[idx + 1].timestamp === state.data?.timestamp) {
+        if (
+          !data[idx + 1] ||
+          data[idx + 1].timestamp === state.data?.timestamp
+        ) {
           return {
             live: true,
             data: null,
@@ -44,8 +47,6 @@ const timeControlReducer = (
       const idx = state.data
         ? data.findIndex((elem) => elem.timestamp === state.data?.timestamp)
         : data.length - 1;
-
-      console.log("live: " + state.live);
 
       if (idx === -1) {
         return state;

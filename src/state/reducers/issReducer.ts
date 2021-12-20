@@ -28,11 +28,11 @@ const issReducer = (state = initialState, action: ISSAction): ISSState => {
         loading: false,
         data: state.data,
         error: action.payload.error,
-      }
+      };
 
     default:
       return {
-        ...state
+        ...state,
       };
   }
 };
