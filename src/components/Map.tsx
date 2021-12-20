@@ -1,5 +1,5 @@
 import { LatLngExpression } from "leaflet";
-import { ReactElement, useEffect, useRef, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { MapContainer, Polyline, TileLayer } from "react-leaflet";
 import { useSelector } from "react-redux";
 import { fetchISSRequest, appendToPolyLine } from "../state/actionCreators";
