@@ -12,6 +12,7 @@ Track the International Space Station's real time position above the earth.
 
 ## Prerequisites
 
+- [Node.js](https://nodejs.org/en/)
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/)
 
