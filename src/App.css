@@ -12,10 +12,17 @@
   display: flex;
   justify-content: space-around;
   text-justify: center;
-  width: 30%;
+  width: 40%;
   border: 4px;
   border-color: #000;
   text-align: center;
   margin: auto;
   color: #fff;
+}
+
+#slider {
+  width: 20%;
+  justify-content: center;
+  margin-top: auto;
+  margin-bottom: auto;
 }

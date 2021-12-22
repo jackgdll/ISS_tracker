@@ -1,3 +1,4 @@
+import { last } from "../../utils";
 import {
   TimeControlAction,
   TimeControlState,
@@ -55,6 +56,24 @@ const timeControlReducer = (
         live: false,
         data: idx === 0 ? state.data : data[idx - 1],
       };
+
+    case TimeControlTypes.TIME_SET:
+      const newData = action.payload.data.find(
+        (elem) => elem.timestamp === action.payload.timestamp
+      );
+      if (newData) {
+        return newData.timestamp === last(action.payload.data).timestamp
+          ? {
+              live: true,
+              data: null,
+            }
+          : {
+              live: false,
+              data: newData,
+            };
+      } else {
+        return state;
+      }
 
     default:
       return state;

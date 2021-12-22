@@ -73,6 +73,7 @@ export enum TimeControlTypes {
   TIME_FORWARD = "TIME_FORWARD",
   TIME_BACKWARD = "TIME_BACKWARD",
   TIME_RESET = "TIME_RESET",
+  TIME_SET = "TIME_SET",
 }
 
 export interface TimeControlState {
@@ -86,6 +87,11 @@ export interface TimeControlForwardPayload {
 
 export interface TimeControlBackwardPayload {
   data: IISSData[];
+}
+
+export interface TimeControlSetPayload {
+  data: IISSData[];
+  timestamp: number;
 }
 
 export interface TimeControlForwardAction {
@@ -102,7 +108,13 @@ export interface TimeControlResetAction {
   type: typeof TimeControlTypes.TIME_RESET;
 }
 
+export interface TimeControlSetAction {
+  type: typeof TimeControlTypes.TIME_SET;
+  payload: TimeControlSetPayload;
+}
+
 export type TimeControlAction =
   | TimeControlForwardAction
   | TimeControlBackwardAction
-  | TimeControlResetAction;
+  | TimeControlResetAction
+  | TimeControlSetAction;

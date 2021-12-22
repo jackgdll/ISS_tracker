@@ -4,6 +4,8 @@ import {
   TimeControlForwardAction,
   TimeControlForwardPayload,
   TimeControlResetAction,
+  TimeControlSetAction,
+  TimeControlSetPayload,
   TimeControlTypes,
 } from "../types";
 
@@ -23,4 +25,11 @@ export const timeControlBackward = (
 
 export const timeControlReset = (): TimeControlResetAction => ({
   type: TimeControlTypes.TIME_RESET,
+});
+
+export const timeControlSet = (
+  payload: TimeControlSetPayload
+): TimeControlSetAction => ({
+  type: TimeControlTypes.TIME_SET,
+  payload,
 });

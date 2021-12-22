@@ -8,6 +8,7 @@ import {
   timeControlBackward,
   timeControlForward,
   timeControlReset,
+  timeControlSet,
 } from "./timeControlActionCreators";
 
 export {
@@ -19,4 +20,5 @@ export {
   timeControlBackward,
   timeControlForward,
   timeControlReset,
+  timeControlSet,
 };
