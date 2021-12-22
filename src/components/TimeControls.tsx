@@ -45,7 +45,7 @@ export const TimeControls: React.FC = () => {
   };
 
   return (
-    <div className="pannel">
+    <div className="controls">
       <div>
         <ControlIcon
           onClick={

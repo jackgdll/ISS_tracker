@@ -10,19 +10,30 @@
 
 .pannel {
   display: flex;
-  justify-content: space-around;
-  text-justify: center;
-  width: 40%;
-  border: 4px;
-  border-color: #000;
+  justify-content: space-between;
+  width: 100%;
   text-align: center;
   margin: auto;
   color: #fff;
 }
 
+.title {
+  display: flex;
+  text-align: center;
+  margin: auto;
+  flex: 1;
+  margin-left: 20px;
+}
+
+.controls {
+  display: flex;
+  margin: auto;
+}
+
 #slider {
-  width: 20%;
+  width: 10em;
   justify-content: center;
+  margin: 20px;
   margin-top: auto;
   margin-bottom: auto;
 }

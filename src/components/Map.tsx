@@ -63,7 +63,7 @@ export default function Map(): ReactElement {
         {!issData?.iss_position ? <></> : <ISSMarker data={issData} />}
         {polyLine.length !== 0 ? (
           <Polyline
-            positions={last(polyLine) as any}
+            positions={polyLine as any}
             pathOptions={{ color: "#008b8b" }}
           />
         ) : (
