@@ -1,5 +1,5 @@
 import { ReactElement, useEffect, useState } from "react";
-import { MapContainer, Polyline, TileLayer,  } from "react-leaflet";
+import { MapContainer, Polyline, TileLayer } from "react-leaflet";
 import { useSelector } from "react-redux";
 import { fetchISSRequest, appendToPolyLine } from "../state/actionCreators";
 import { useAppDispatch } from "../state/hooks";
@@ -42,12 +42,6 @@ export default function Map(): ReactElement {
       }
     }
   }, [data, loading, dispatch]);
-
-  // useEffect(() => {
-  //   for (const elem of polyLine) {
-  //   console.table(elem);
-  // }
-  // }, [polyLine])
 
   return (
     <MapContainer

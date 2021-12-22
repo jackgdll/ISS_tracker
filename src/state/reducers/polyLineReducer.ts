@@ -5,6 +5,8 @@ const DISTANCE_LIMIT = 1000;
 
 const initialState: PolyLineState = [];
 
+const clone = (o: Object) => JSON.parse(JSON.stringify(o));
+
 const polyLineReducer = (state = initialState, action: PolyLineAction) => {
   switch (action.type) {
     case PolyLineTypes.POLYLINE_APPEND:
@@ -25,13 +27,13 @@ const polyLineReducer = (state = initialState, action: PolyLineAction) => {
           action.payload.longitude
         ) > DISTANCE_LIMIT
       ) {
-        return state.concat([
-          [[action.payload.latitude, action.payload.longitude]],
-        ]);
+        return clone(
+          state.concat([[[action.payload.latitude, action.payload.longitude]]])
+        );
       } else {
         lastLine.push([action.payload.latitude, action.payload.longitude]);
         state[state.length - 1] = lastLine;
-        return state;
+        return clone(state);
       }
 
     case PolyLineTypes.POLYLINE_CLEAR:

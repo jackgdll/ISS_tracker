@@ -1,11 +1,5 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../state/store";
-import {
-  MdPlayArrow,
-  MdRefresh,
-  MdSkipNext,
-  MdSkipPrevious,
-} from "react-icons/md";
 import { useAppDispatch } from "../state/hooks";
 import {
   clearPolyLine,
@@ -14,37 +8,77 @@ import {
   timeControlReset,
 } from "../state/actionCreators";
 import { formatTimestamp, last } from "../utils";
+import { Tooltip } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import {
+  SkipPrevious,
+  PlayArrow,
+  SkipNext,
+  Refresh,
+} from "@mui/icons-material";
 
-export const TimeControls = () => {
+interface Props {
+  onClick?: any;
+  tooltip: string;
+}
+
+const ControlIcon: React.FC<Props> = ({ children, onClick, tooltip }) => {
+  return (
+    <Tooltip title={tooltip}>
+      <IconButton size="large" onClick={onClick}>
+        {children}
+      </IconButton>
+    </Tooltip>
+  );
+};
+
+export const TimeControls: React.FC = () => {
   const dispatch = useAppDispatch();
   const { live, data: currentData } = useSelector(
     (state: RootState) => state.timeControl
   );
-  const { loading, data, error } = useSelector((state: RootState) => state.iss);
+  const { data } = useSelector((state: RootState) => state.iss);
 
   return (
     <div className="pannel">
       <div>
-        <MdSkipPrevious
-          size={30}
-          color={
-            currentData?.timestamp === data[0]?.timestamp ? "#999" : "#FFF"
+        <ControlIcon
+          onClick={
+            !data ? undefined : () => dispatch(timeControlBackward({ data }))
           }
-          onClick={() => dispatch(timeControlBackward({ data }))}
-        />
-        <MdPlayArrow
-          size={30}
-          color={live ? "#999" : "#FFF"}
-          onClick={() => dispatch(timeControlReset())}
-        />
-        <MdSkipNext
-          size={30}
-          color={live ? "#999" : "#FFF"}
-          onClick={() => dispatch(timeControlForward({ data }))}
-        />
-        <MdRefresh size={30} onClick={() => dispatch(clearPolyLine())} />
+          tooltip="Step Back in Time"
+        >
+          <SkipPrevious
+            color={
+              !data || currentData?.timestamp === data[0]?.timestamp
+                ? "disabled"
+                : "primary"
+            }
+          />
+        </ControlIcon>
+
+        <ControlIcon
+          onClick={!data ? undefined : () => dispatch(timeControlReset())}
+          tooltip="Live Feed"
+        >
+          <PlayArrow color={!data || live ? "disabled" : "primary"} />
+        </ControlIcon>
+        <ControlIcon
+          onClick={
+            !data ? undefined : () => dispatch(timeControlForward({ data }))
+          }
+          tooltip="Step Forward in Time"
+        >
+          <SkipNext color={!data || live ? "disabled" : "primary"} />
+        </ControlIcon>
+        <ControlIcon
+          onClick={() => dispatch(clearPolyLine())}
+          tooltip="Reset Trail"
+        >
+          <Refresh color="primary" />
+        </ControlIcon>
       </div>
-      <div style={{alignSelf: 'center'}}>
+      <div style={{ alignSelf: "center" }}>
         {formatTimestamp(
           currentData ? currentData.timestamp : last(data)?.timestamp
         )}
