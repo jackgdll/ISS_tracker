@@ -1,12 +1,21 @@
+import { LatLngExpression } from "leaflet";
 import { ReactElement, useEffect, useState } from "react";
-import { MapContainer, Polyline, TileLayer } from "react-leaflet";
+import {
+  MapContainer,
+  Marker,
+  Polyline,
+  Popup,
+  TileLayer,
+} from "react-leaflet";
 import { useSelector } from "react-redux";
+import useGeoLocation from "../hooks/useGeoLocation";
 import { fetchISSRequest, appendToPolyLine } from "../state/actionCreators";
 import { useAppDispatch } from "../state/hooks";
 import { RootState } from "../state/store";
 import { IISSData } from "../state/types";
 import { last } from "../utils";
 import ISSMarker from "./ISSMarker";
+import { MeMarker } from "./MeMarker";
 
 const THREE_SECONDS_MS = 3000;
 
@@ -18,6 +27,11 @@ export default function Map(): ReactElement {
   );
   const { loading, data, error } = useSelector((state: RootState) => state.iss);
   const [issData, setIssData] = useState<IISSData | null>(null);
+  const {
+    loading: geoLocLoading,
+    error: geoLocError,
+    coords,
+  } = useGeoLocation();
 
   useEffect(() => {
     if (!loading && !error) {
@@ -25,6 +39,7 @@ export default function Map(): ReactElement {
     }
   }, [currentData, live, data, loading, error]);
 
+  // Update ISS position every 3 seconds
   useEffect(() => {
     dispatch(fetchISSRequest());
     const interval = setInterval(() => {
@@ -43,6 +58,11 @@ export default function Map(): ReactElement {
     }
   }, [data, loading, dispatch]);
 
+  const getLocation = () => {
+    if (!navigator.geolocation) {
+    }
+  };
+
   return (
     <MapContainer
       id="map"
@@ -59,17 +79,41 @@ export default function Map(): ReactElement {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <>
-        {!issData?.iss_position ? <></> : <ISSMarker data={issData} />}
-        {polyLine.length !== 0 ? (
-          <Polyline
-            positions={polyLine as any}
-            pathOptions={{ color: "#008b8b" }}
+      {!issData ? (
+        <></>
+      ) : (
+        <>
+          <ISSMarker
+            coords={issData.iss_position}
+            timestamp={issData.timestamp}
           />
-        ) : (
-          <></>
-        )}
-      </>
+          {!geoLocLoading && !geoLocError && coords ? (
+            <>
+              <MeMarker issCoords={issData.iss_position} meCoords={coords} />
+              <Polyline
+                positions={[
+                  [coords.latitude, coords.longitude],
+                  [
+                    issData.iss_position.latitude,
+                    issData.iss_position.longitude,
+                  ],
+                ]}
+                pathOptions={{weight: 1, dashArray: '10, 5'}}
+              />
+            </>
+          ) : (
+            <></>
+          )}
+        </>
+      )}
+      {polyLine.length !== 0 ? (
+        <Polyline
+          positions={polyLine as LatLngExpression[][]}
+          pathOptions={{ color: "#008b8b", lineJoin: "round" }}
+        />
+      ) : (
+        <></>
+      )}
     </MapContainer>
   );
 }

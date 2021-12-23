@@ -14,27 +14,17 @@ const polyLineReducer = (state = initialState, action: PolyLineAction) => {
       if (state.length === 0) {
         return [[[action.payload.latitude, action.payload.longitude]]];
       }
-      const dist = pythag(
-        lastPoint[0],
-        lastPoint[1],
-        action.payload.latitude,
-        action.payload.longitude
-      );
-      if (dist > 50) {
-        console.log("dist: " + dist);
-      }
       // Starts a new line if the ISS wraps arround the map
       if (
         state.length > 0 &&
         lastPoint.length === 2 &&
         pythag(
-          lastPoint[0],
-          lastPoint[1],
-          action.payload.latitude,
-          action.payload.longitude
+          { latitude: lastPoint[0], longitude: lastPoint[1] },
+          action.payload
         ) > DISTANCE_LIMIT
       ) {
-        return Object.assign([],
+        return Object.assign(
+          [],
           state.concat([[[action.payload.latitude, action.payload.longitude]]])
         );
       } else {

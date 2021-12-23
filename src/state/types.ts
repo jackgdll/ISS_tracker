@@ -1,3 +1,8 @@
+export interface Coords {
+  latitude: number;
+  longitude: number;
+}
+
 //   ISS
 
 export enum ISSTypes {
@@ -38,7 +43,7 @@ export type ISSAction = FetchISSRequest | FetchISSSuccess | FetchISSFailure;
 
 export interface IISSData {
   message: string;
-  iss_position: { longitude: number; latitude: number };
+  iss_position: Coords;
   timestamp: number;
 }
 
@@ -51,10 +56,7 @@ export enum PolyLineTypes {
 
 export type PolyLineState = number[][][];
 
-export interface PolyLineAppendPayload {
-  latitude: number;
-  longitude: number;
-}
+export type PolyLineAppendPayload = Coords;
 
 export interface PolyLineAppendAction {
   type: typeof PolyLineTypes.POLYLINE_APPEND;
