@@ -2,9 +2,7 @@ import { LatLngExpression } from "leaflet";
 import { ReactElement, useEffect, useState } from "react";
 import {
   MapContainer,
-  Marker,
   Polyline,
-  Popup,
   TileLayer,
 } from "react-leaflet";
 import { useSelector } from "react-redux";
@@ -12,7 +10,7 @@ import useGeoLocation from "../hooks/useGeoLocation";
 import { fetchISSRequest, appendToPolyLine } from "../state/actionCreators";
 import { useAppDispatch } from "../state/hooks";
 import { RootState } from "../state/store";
-import { IISSData } from "../state/types";
+import { Coords, IISSData } from "../state/types";
 import { last } from "../utils";
 import ISSMarker from "./ISSMarker";
 import { MeMarker } from "./MeMarker";
@@ -26,7 +24,7 @@ export default function Map(): ReactElement {
     (state: RootState) => state.timeControl
   );
   const { loading, data, error } = useSelector((state: RootState) => state.iss);
-  const [issData, setIssData] = useState<IISSData | null>(null);
+  const [issData, setIssData] = useState<IISSData>();
   const {
     loading: geoLocLoading,
     error: geoLocError,
@@ -51,17 +49,15 @@ export default function Map(): ReactElement {
 
   useEffect(() => {
     if (data && !loading) {
-      const position = last(data)?.iss_position;
-      if (position) {
-        dispatch(appendToPolyLine(position));
+      const lastData: IISSData = last(data);
+      if (lastData) {
+        const position: Coords = {latitude: lastData.latitude, longitude: lastData.longitude};
+        if (position) {
+          dispatch(appendToPolyLine(position));
+        }
       }
     }
   }, [data, loading, dispatch]);
-
-  const getLocation = () => {
-    if (!navigator.geolocation) {
-    }
-  };
 
   return (
     <MapContainer
@@ -84,18 +80,18 @@ export default function Map(): ReactElement {
       ) : (
         <>
           <ISSMarker
-            coords={issData.iss_position}
+            coords={{latitude: issData.latitude, longitude: issData.longitude}}
             timestamp={issData.timestamp}
           />
           {!geoLocLoading && !geoLocError && coords ? (
             <>
-              <MeMarker issCoords={issData.iss_position} meCoords={coords} />
+              <MeMarker issCoords={{latitude: issData.latitude, longitude: issData.longitude}} meCoords={coords} />
               <Polyline
                 positions={[
                   [coords.latitude, coords.longitude],
                   [
-                    issData.iss_position.latitude,
-                    issData.iss_position.longitude,
+                    issData.latitude,
+                    issData.longitude,
                   ],
                 ]}
                 pathOptions={{weight: 1, dashArray: '10, 5'}}

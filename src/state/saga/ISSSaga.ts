@@ -4,7 +4,8 @@ import { fetchISSFailure, fetchISSSuccess } from "../actionCreators";
 import { IISSData, ISSTypes } from "../types";
 
 export const getISSData = () =>
-  axios.get<IISSData>("http://api.open-notify.org/iss-now.json");
+  axios.get<IISSData>("https://api.wheretheiss.at/v1/satellites/25544");
+  //axios.get<IISSData>("http://api.open-notify.org/iss-now.json");
 
 export function* fetchISSDataSaga(): Generator {
   try {

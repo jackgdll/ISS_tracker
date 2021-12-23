@@ -23,7 +23,7 @@ export const pythag = (p1: Coords, p2: Coords): number =>
   );
 
 export const last = (arr: any[]) =>
-  arr ? arr[arr.length > 0 ? arr.length - 1 : 0] : [];
+  arr ? arr[arr.length > 0 ? arr.length - 1 : 0] : undefined;
 
 function deg2rad(deg: number) {
   return deg * (Math.PI / 180);
