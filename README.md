@@ -2,6 +2,8 @@
 
 Track the International Space Station's real time position above the earth.
 
+Deployed on GitHub Pages at https://therosbif.github.io/ISS_tracker/
+
 ## Tech Stack
 
 - [React](https://reactjs.org/)
@@ -18,7 +20,7 @@ Track the International Space Station's real time position above the earth.
 
 ## Description
 
-Map is updated every 3 seconds, making an API call to `http://api.open-notify.org/iss-now.json`
+Map is updated every 3 seconds, making an API call to `https://api.wheretheiss.at/v1/satellites/25544`
 
 A trail is left behind the Stations path.
 
@@ -30,16 +32,13 @@ Clone the repo:
 git clone git@github.com:therosbif/ISS_tracker.git
 ```
 
-| ⚠️ WARNING: Due to Firefox's CORS policy, calls to the ISS position API are blocked by default, for optimal experience use a Chromium based browser. |
-----
-
-### Production
+### Docker
 
 ```bash
 docker-compose up --build
 ```
 
-### Development
+### Local
 
 ```bash
 nvm install v16.13.1 && nvm use v16.13.1
