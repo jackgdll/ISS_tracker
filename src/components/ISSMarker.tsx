@@ -12,8 +12,8 @@ const ISSMarker = ({ coords, timestamp }: Props) => (
   <Marker position={[coords.latitude, coords.longitude]} icon={issIcon}>
     <Popup>
       ISS Position: <br />
-      · latitude: {coords.latitude}<br />
-      · longitude: {coords.longitude} <br />
+      · latitude: {coords.latitude.toFixed(4)}<br />
+      · longitude: {coords.longitude.toFixed(4)} <br />
       <br />
       Time: {formatTimestamp(timestamp)}
     </Popup>
