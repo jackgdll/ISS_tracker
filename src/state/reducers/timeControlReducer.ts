@@ -59,7 +59,7 @@ const timeControlReducer = (
 
     case TimeControlTypes.TIME_SET:
       const newData = action.payload.data.find(
-        (elem) => elem.timestamp === action.payload.timestamp
+        (elem) => Math.abs(elem.timestamp - action.payload.timestamp) < 2
       );
       if (newData) {
         return newData.timestamp === last(action.payload.data).timestamp
