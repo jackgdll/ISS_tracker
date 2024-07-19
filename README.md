@@ -29,7 +29,7 @@ A trail is left behind the Stations path.
 Clone the repo:
 
 ```bash
-git clone git@github.com:therosbif/ISS_tracker.git
+git clone git@github.com:jackgdll/ISS_tracker.git
 ```
 
 ### Docker
