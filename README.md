@@ -2,7 +2,7 @@
 
 Track the International Space Station's real time position above the earth.
 
-Deployed on GitHub Pages at https://therosbif.github.io/ISS_tracker/
+Deployed on GitHub Pages at [https://jackgdll.github.io/ISS_tracker/](https://jackgdll.github.io/ISS_tracker/)
 
 ## Tech Stack
 
